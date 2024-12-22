@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ruan e Mercilla</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      text-align: center;
+      background-color: #071525; /* Fundo cinza claro */
+    }
+
+    h1, h2 {
+      color: #d8d8d8;
+    }
+
+    #imageContainer {
+      width: 100%;
+      max-width: 360px; /* Largura máxima do retângulo */
+      aspect-ratio: 3 / 4; /* Define a proporção do retângulo */
+      margin: 20px auto;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    #imageContainer img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Ajusta a imagem ao contêiner sem distorcer */
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    p {
+      margin: 10px 0;
+      color: #d8d8d8;
+    }
+
+    /* Responsividade */
+    @media (max-width: 600px) {
+      body {
+        padding: 0 10px;
+      }
+
+      h1, h2 {
+        font-size: 1.5rem;
+      }
+
+      #imageContainer {
+        max-width: 100%;
+      }
+    }
+
+    /* Estilo do botão */
+    #playPauseButton {
+      background-color: #373636;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+
+    #playPauseButton:hover {
+      background-color: #373636;
+      /* Emojis caindo */
+      .emoji {
+        position: absolute;
+        font-size: 2rem;
+        opacity: 1;
+        animation: fall 4s ease-in-out; /* Chama a animação */
+      }
+
+      /* Definindo a animação de queda */
+      @keyframes fall {
+        0% {
+          top: -10%; /* Começa acima do contêiner */
+          opacity: 1; /* Totalmente visível */
+        }
+        50% {
+          opacity: 0.5; /* Gradualmente transparente */
+        }
+        100% {
+          top: 100%; /* Cai até o fundo do contêiner */
+          opacity: 0; /* Totalmente invisível */
+        }
+      }
+    }
+  </style>
+</head>
+<body>
+<h1>M&R🤍</h1>
+
+
+
+<!-- Adiciona o áudio -->
+<audio id="backgroundAudio" autoplay loop>
+  <source src="img/L7NNON-Perdição.mp3" type="audio/mpeg">
+  Seu navegador não suporta o elemento de áudio.
+</audio>
+
+<div id="imageContainer">
+  <img id="image1" src="img/mr1.jpg" alt="mr" />
+  <img id="image2" src="img/mr2.jpg" alt="mr" />
+  <img id="image3" src="img/mr3.jpg" alt="mr" />
+  <img id="image4" src="img/mr4.jpg" alt="mr" />
+  <img id="image5" src="img/mr5.jpg" alt="mr" />
+</div>
+
+<p>
+  Eu estou há
+  <span id="years"></span> anos,
+  <span id="months"></span> meses,
+  <span id="days"></span> dias,
+  <span id="hours"></span> horas,
+  <span id="minutes"></span> minutos e
+  <span id="seconds"></span> segundos namorando a garota mais linda do mundo.
+</p>
+
+<h2 style="color: #373636;">—————</h2>
+<p>Eu te amo Minha Princesa!</p>
+<p> Feliz 2 anos!! <3</p>
+
+<!-- Botão para pausar ou retomar a música -->
+<button id="playPauseButton" onclick="toggleAudio()">Pausar Música</button>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+<script>
+
+  // JavaScript para imagens e contador
+  let currentIndex = 0;
+  const images = document.querySelectorAll('#imageContainer img');
+
+  images.forEach((image) => {
+    image.style.display = 'none';
+  });
+
+  images[currentIndex].style.display = 'block';
+
+  function changeImage() {
+    images[currentIndex].style.display = 'none';
+    currentIndex = (currentIndex + 1) % images.length;
+    images[currentIndex].style.display = 'block';
+  }
+
+  setInterval(changeImage, 5000);
+
+  function updateTime() {
+    const targetDate = moment('2022-12-28T00:00:00');
+    const currentDate = moment();
+
+    const years = currentDate.diff(targetDate, 'years');
+    const months = currentDate.diff(targetDate, 'months') % 12;
+    const targetDay = targetDate.date();
+    const currentDay = currentDate.date();
+
+    let daysDifference = currentDay - targetDay;
+    if (daysDifference < 0) {
+      daysDifference += 30;
+    }
+
+    const hours = currentDate.diff(targetDate, 'hours') % 24;
+    const minutes = currentDate.diff(targetDate, 'minutes') % 60;
+    const seconds = currentDate.diff(targetDate, 'seconds') % 60;
+
+    document.getElementById('years').textContent = years;
+    document.getElementById('months').textContent = months;
+    document.getElementById('days').textContent = daysDifference;
+    document.getElementById('hours').textContent = hours;
+    document.getElementById('minutes').textContent = minutes;
+    document.getElementById('seconds').textContent = seconds;
+  }
+
+  setInterval(updateTime, 1000);
+  updateTime();
+
+  // Função para alternar a reprodução do áudio
+  function toggleAudio() {
+    const audio = document.getElementById('backgroundAudio');
+    const button = document.getElementById('playPauseButton');
+
+    if (audio.paused) {
+      audio.play();
+      button.textContent = "Pausar Música";
+    } else {
+      audio.pause();
+      button.textContent = "Reproduzir Música";
+    }
+  }
+</script>
+</body>
+</html>
